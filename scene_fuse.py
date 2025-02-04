@@ -204,7 +204,13 @@ class VideoMergerApp:
             text='انتخاب پوشه تصاویر',
             command=self.select_image_folder
         ).pack(side='left')
-        
+
+            
+         # دکمه آبی برای اجرای hajm.py
+        button = tk.Button(self.root, text="کاهش حجم فایل خروجی بدون افت کیفیت", command=self.run_script, bg='blue', fg='white')
+        button.pack(pady=20)
+
+
         # وارد کردن مدت زمان نمایش تصاویر
         duration_label = tk.Label(self.root, text="مدت زمان نمایش هر تصویر (ثانیه):")
         duration_label.pack(padx=10, pady=5)
@@ -216,6 +222,10 @@ class VideoMergerApp:
         # رویداد دوبار کلیک
         self.table.bind('<Double-1>', self.select_cover_image)
     
+    def run_script(self):
+        """این تابع برای اجرای hajm.py است"""
+        subprocess.run(['python', 'hajm.py'])
+
     def select_video_folder(self):
         folder = filedialog.askdirectory()
         if folder:
