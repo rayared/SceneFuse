@@ -67,9 +67,12 @@ def merge_media(video_folder, image_paths, output_path, image_duration=3):
             video_chain.append(f"[v{i}]")
             audio_chain.append(f"[a{i}]")
         
-        # اضافه کردن ویدیو اصلی
-        video_chain.append(f"[{total_inputs + i}:v]")
+        # اضافه کردن ویدیو اصلی و تغییر رزولوشن آن به 1920x1080
+        video_chain.append(f"[v{total_inputs + i}]")
         audio_chain.append(f"[{total_inputs + i}:a]")
+        
+        # اعمال فیلتر scale به ویدیو اصلی
+        filters.append(f"[{total_inputs + i}:v]scale=1920:1080,setsar=1[v{total_inputs + i}];")
         
         # زمان شروع و پایان هر ویدیو
         start_minutes = int(current_time // 60)
@@ -143,6 +146,7 @@ def merge_media(video_folder, image_paths, output_path, image_duration=3):
     except subprocess.CalledProcessError as e:
         messagebox.showerror("خطا", f"خطا در پردازش:\n{str(e)}")
         return False
+
 # ----------------- GUI Part -----------------
 class VideoMergerApp:
     def __init__(self, root):
